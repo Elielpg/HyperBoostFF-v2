@@ -5,7 +5,7 @@ workflows:
     scripts:
       - name: Ensure gradlew is executable
         script: |
-          chmod +x gradlew || true
+          chmod +x gradlew
 
       - name: Clean project
         script: |
@@ -14,13 +14,13 @@ workflows:
       - name: Build debug APK
         script: |
           ./gradlew assembleDebug
-          echo "=== LISTANDO ARQUIVOS APK ==="
+          echo "=== APKs Encontrados ==="
           find . -name "*.apk" || true
 
     artifacts:
+      - "app/build/outputs/**/*.apk"
+      - "**/*-debug.apk"
       - "**/*.apk"
-      - "app/build/**/*.apk"
-      - "build/**/*.apk"
 
     publishing:
       email:
