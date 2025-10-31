@@ -8,44 +8,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Baixa o código do repositório
+      # 1️⃣ Checkout do repositório
       - name: Checkout repositório
         uses: actions/checkout@v4
 
-      # 2️⃣ Configura o Flutter
+      # 2️⃣ Configurar Flutter
       - name: Configurar Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.0'
 
-      # 3️⃣ Instala as dependências
+      # 3️⃣ Entrar na pasta do projeto Flutter
+      - name: Entrar na pasta app
+        run: cd app
+
+      # 4️⃣ Instalar dependências
       - name: Instalar dependências
+        working-directory: app
         run: flutter pub get
 
-      # 4️⃣ Faz cache para builds mais rápidos
-      - name: Cache de dependências
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.pub-cache
-            build/
-          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-flutter-
-
-      # 5️⃣ Compila o APK (versão release)
+      # 5️⃣ Compilar APK (Release)
       - name: Compilar APK
+        working-directory: app
         run: flutter build apk --release
 
-      # 6️⃣ Compila o AAB (para Play Store)
+      # 6️⃣ Compilar AAB (para Play Store)
       - name: Compilar AAB
+        working-directory: app
         run: flutter build appbundle --release
 
-      # 7️⃣ Faz upload dos arquivos gerados (APK e AAB)
-      - name: Upload dos artefatos (APK e AAB)
+      # 7️⃣ Upload dos artefatos (APK e AAB)
+      - name: Upload dos artefatos
         uses: actions/upload-artifact@v4
         with:
           name: HyperBoostFF-v2
           path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
+            app/build/app/outputs/flutter-apk/app-release.apk
+            app/build/app/outputs/bundle/release/app-release.aab
