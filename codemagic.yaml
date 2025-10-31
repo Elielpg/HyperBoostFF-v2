@@ -2,7 +2,8 @@ workflows:
   android-build:
     name: Build Android APK
     environment:
-      sdk: 33
+      android:
+        image: default
       java: 17
     scripts:
       - name: Clean project
