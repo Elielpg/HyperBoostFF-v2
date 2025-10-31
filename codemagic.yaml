@@ -1,16 +1,20 @@
 workflows:
-  android-workflow:
-    name: Build Android APK
+  android-build:
+    name: Build Android (Free Plan)
     max_build_duration: 60
-    instance_type: linux
     environment:
+      groups:
+        - default
       flutter: stable
+      vars:
+        BUILD_TYPE: release
     scripts:
-      - name: Get dependencies
+      - name: Get Flutter dependencies
         script: |
           flutter pub get
-      - name: Build release APK
+      - name: Build APK
         script: |
           flutter build apk --release
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
+    instance_type: linux
