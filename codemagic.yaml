@@ -2,10 +2,6 @@ workflows:
   android-build:
     name: Build Android APK
 
-    environment:
-      vars:
-        JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
-
     scripts:
       - name: Ensure gradlew is executable
         script: |
