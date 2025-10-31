@@ -1,29 +1,16 @@
 workflows:
-  android-debug:
-    name: Build Android (debug)
-    instance_type: linux
+  android-workflow:
+    name: Build Android APK
     max_build_duration: 60
-
+    environment:
+      instance_type: linux
+      flutter: stable
     scripts:
-      - name: Ensure gradlew is executable
+      - name: Get dependencies
         script: |
-          chmod +x gradlew || true
-
-      - name: Clean project
+          flutter pub get
+      - name: Build release APK
         script: |
-          ./gradlew clean
-
-      - name: Build debug APK
-        script: |
-          ./gradlew assembleDebug
-          echo "=== APKS ENCONTRADOS ==="
-          find . -name "*.apk" || true
-
+          flutter build apk --release
     artifacts:
-      - app/build/outputs/apk/debug/*.apk
-      - app/build/outputs/**/*.apk
-
-    publishing:
-      email:
-        recipients:
-          - elielcornelio58@gmail.com
+      - build/app/outputs/flutter-apk/app-release.apk
