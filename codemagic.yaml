@@ -1,15 +1,17 @@
 workflows:
   android-build:
     name: Build Android APK
-    environment:
-      android:
-        image: default
-      java: 17
+    # Não usamos 'environment: android:' aqui (causa validação inválida)
     scripts:
+      - name: Ensure gradlew is executable
+        script: |
+          chmod +x gradlew || true
       - name: Clean project
-        script: ./gradlew clean
+        script: |
+          ./gradlew clean
       - name: Build debug APK
-        script: ./gradlew assembleDebug
+        script: |
+          ./gradlew assembleDebug
     artifacts:
       - app/build/outputs/**/*.apk
     publishing:
