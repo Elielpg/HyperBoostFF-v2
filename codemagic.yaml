@@ -1,22 +1,21 @@
 workflows:
-  android-gradle:
-    name: Build Android (Gradle)
-    max_build_duration: 60
-    instance_type: linux
+  android-build:
+    name: Build Android APK
+    instance_type: linux  # usa máquina gratuita do Codemagic
 
     scripts:
-      - name: Ensure gradlew is executable
+      - name: Garantir permissão do gradlew
         script: |
           chmod +x gradlew || true
 
-      - name: Clean project
+      - name: Limpar projeto
         script: |
           ./gradlew clean
 
-      - name: Build debug APK
+      - name: Compilar APK Debug
         script: |
           ./gradlew assembleDebug
-          echo "=== LISTANDO APKS ==="
+          echo "=== APKS ENCONTRADOS ==="
           find . -name "*.apk" || true
 
     artifacts:
